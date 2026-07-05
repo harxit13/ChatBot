@@ -1,12 +1,12 @@
 # Dialogflow Telegram Chatbot Backend
 
-A Flask-based backend webhook for a Dialogflow chatbot that performs real-time currency conversion. It integrates with Telegram via Dialogflow and uses the Free Currency Converter API to fetch current conversion rates.
+A Flask-based backend webhook for a Dialogflow chatbot that performs real-time currency conversion. It integrates with Telegram via Dialogflow and uses the Frankfurter API to fetch current conversion rates.
 
 ## Features
 
 - **Dialogflow Integration**: Exposes a webhook endpoint (`/`) to receive fulfillment POST requests from Dialogflow.
 - **Currency Conversion**: Extracts unit currency (source currency and amount) and target currency from Dialogflow parameters.
-- **Real-Time Exchange Rates**: Fetches rates dynamically from the Free Currency Converter API.
+- **Real-Time Exchange Rates**: Fetches rates dynamically from the free and open Frankfurter API (no registration or API key required).
 - **Formatted Response**: Sends fulfillment messages back to Dialogflow which are then relayed to the user on Telegram.
 
 ## Project Structure
@@ -23,8 +23,7 @@ A Flask-based backend webhook for a Dialogflow chatbot that performs real-time c
 
 ### Prerequisites
 
-- Python 3.x
-- A free API key from [Free Currency Converter API](https://free.currconv.com/)
+- Python 3.x (no API keys required!)
 
 ### Installation
 
@@ -52,15 +51,19 @@ A Flask-based backend webhook for a Dialogflow chatbot that performs real-time c
 
 1. Start the Flask application:
    ```bash
-   python app.py
+   py app.py
    ```
-   By default, the server will run on `http://127.0.0.1:5000/`.
+   By default, the server will run locally on `http://127.0.0.1:5000/`.
 
-2. To connect this to Dialogflow, you need a public URL. Use **ngrok** to expose your local port:
+2. **Interactive Mock Chat Frontend**: 
+   Open `http://127.0.0.1:5000/` in your web browser. You will find a built-in interactive chat simulator where you can test currency conversion messages (e.g., "100 USD to INR") directly in a user-friendly chat UI!
+
+3. **Exposing to Dialogflow / Telegram**:
+   To connect this backend to a live Dialogflow agent and Telegram, you need a public URL. Expose your local port using **ngrok**:
    ```bash
    ngrok http 5000
    ```
-   Copy the `https` forwarding URL provided by ngrok and paste it into the **Fulfillment Webhook URL** section of your Dialogflow Console (e.g., `https://xxxx.ngrok.io/`).
+   Copy the `https` forwarding URL provided by ngrok (e.g., `https://xxxx.ngrok-free.app/`) and paste it as the **Webhook URL** in the **Fulfillment** section of your Dialogflow Console.
 
 ## Dialogflow Configuration
 
@@ -71,9 +74,9 @@ A Flask-based backend webhook for a Dialogflow chatbot that performs real-time c
 - **Fulfillment**:
   - Enable **Webhook fulfillment** for the intent that handles currency conversion so it sends the request to your backend.
 
-## Configuration & API Key
+## Configuration & Exchange Rate API
 
-Currently, the application uses a hardcoded API key in `app.py` for `free.currconv.com`. It is recommended to update the `apiKey` parameter or use environment variables to manage it securely.
+This project uses the **Frankfurter API** (`https://api.frankfurter.dev`) to fetch current conversion rates. Since it is a public, open-source service, you do **not** need an API key or configuration to run it.
 
 ## Note on Deployment (Procfile & setup.sh)
 
